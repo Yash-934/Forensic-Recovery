@@ -1,0 +1,6 @@
+{
+  "name": "Forensic Recovery",
+  "description": "Production-grade Android digital forensic recovery suite with deep .bin carving, capability detection, and evidence auditing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

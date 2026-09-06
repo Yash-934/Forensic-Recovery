@@ -36,14 +36,32 @@ jobs:
             touch .env
           fi
 
-      - name: Restore Debug Keystore
+      - name: Ensure Debug Keystore
         run: |
-          if [ -f debug.keystore.base64 ]; then
-            echo "Decoding debug.keystore.base64..."
+          if [ -f debug.keystore ]; then
+            echo "debug.keystore already exists."
+          elif [ -f debug.keystore.base64 ]; then
+            echo "Decoding existing debug.keystore.base64..."
             base64 -d debug.keystore.base64 > debug.keystore
           else
-            echo "debug.keystore.base64 not found, Gradle will generate default debug keystore if needed."
+            echo "debug.keystore not found in repository. Generating debug.keystore via keytool..."
+            keytool -genkeypair -v \
+              -keystore debug.keystore \
+              -alias androiddebugkey \
+              -keypass android \
+              -storepass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
           fi
+
+          if [ ! -f debug.keystore ]; then
+            echo "ERROR: debug.keystore could not be located or created!"
+            exit 1
+          fi
+          echo "debug.keystore is ready:"
+          ls -lh debug.keystore
 
       - name: Grant Execute Permission for Gradlew (if present)
         run: |
@@ -63,6 +81,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Aegis-Forensic-Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14

@@ -28,6 +28,17 @@ class ForensicEngineTest {
   }
 
   @Test
+  fun testFormatFileSize() {
+    assertEquals("0 B", HashUtils.formatFileSize(0))
+    assertEquals("512 B", HashUtils.formatFileSize(512))
+    assertEquals("1.0 KB", HashUtils.formatFileSize(1024))
+    assertEquals("15.5 KB", HashUtils.formatFileSize((15.5 * 1024).toLong()))
+    assertEquals("1.00 MB", HashUtils.formatFileSize(1024 * 1024))
+    assertEquals("4.25 MB", HashUtils.formatFileSize((4.25 * 1024 * 1024).toLong()))
+    assertEquals("1.50 GB", HashUtils.formatFileSize((1.5 * 1024 * 1024 * 1024).toLong()))
+  }
+
+  @Test
   fun testEntropyCalculation() {
     // Flat repeated byte has 0 entropy
     val zeros = ByteArray(1024) { 0 }

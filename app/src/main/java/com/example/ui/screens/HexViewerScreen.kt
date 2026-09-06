@@ -161,7 +161,7 @@ fun HexViewerScreen(
           }
           Spacer(Modifier.height(4.dp))
           Text(
-            text = "Total bytes loaded: ${data.size} bytes | CRC-32: 0x${HashUtils.crc32(data).toString(16).uppercase()}",
+            text = "Loaded: ${HashUtils.formatFileSize(data.size.toLong())} (${data.size} B) | CRC-32: 0x${HashUtils.crc32(data).toString(16).uppercase()}",
             color = TextSecondaryDark,
             fontSize = 10.sp,
             fontFamily = FontFamily.Monospace

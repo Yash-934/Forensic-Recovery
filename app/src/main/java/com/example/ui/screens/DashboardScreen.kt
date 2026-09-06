@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core.DeviceForensicCapabilities
+import com.example.core.HashUtils
 import com.example.core.RecoveryCapabilityLevel
 import com.example.model.RecoveryCandidate
 import com.example.model.ScanProgress
@@ -175,7 +176,7 @@ fun DashboardScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
               ) {
                 Text(
-                  text = "Scanned: ${prog.bytesProcessed / (1024 * 1024)} MB",
+                  text = "Scanned: ${HashUtils.formatFileSize(prog.bytesProcessed)}",
                   color = TextSecondaryDark,
                   fontSize = 11.sp
                 )
@@ -472,7 +473,7 @@ fun CandidateItemCard(
         )
         Spacer(Modifier.height(2.dp))
         Text(
-          text = "${candidate.extension.uppercase()} • ${candidate.size} bytes • Entropy: ${String.format("%.2f", candidate.entropy)}",
+          text = "${candidate.extension.uppercase()} • ${HashUtils.formatFileSize(candidate.size)} • Entropy: ${String.format("%.2f", candidate.entropy)}",
           color = TextSecondaryDark,
           fontSize = 10.sp
         )

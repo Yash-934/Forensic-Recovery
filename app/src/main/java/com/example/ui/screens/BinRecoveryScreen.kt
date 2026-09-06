@@ -211,7 +211,7 @@ fun BinRecoveryScreen(
                 Text("Header Hex: ${prof.detectedHeaderHex}", color = CyberCyan, fontSize = 10.sp, fontFamily = FontFamily.Monospace)
                 Text("Avg Entropy: ${String.format("%.2f", prof.averageEntropy)} / 8.0", color = TextSecondaryDark, fontSize = 10.sp)
                 Text("Detected Stride: ${prof.estimatedStride} bytes", color = TextSecondaryDark, fontSize = 10.sp)
-                Text("Sample Size: ${prof.sampleSizeBytes} bytes", color = TextSecondaryDark, fontSize = 10.sp)
+                Text("Sample Size: ${HashUtils.formatFileSize(prof.sampleSizeBytes)} (${prof.sampleSizeBytes} B)", color = TextSecondaryDark, fontSize = 10.sp)
               }
             }
           }

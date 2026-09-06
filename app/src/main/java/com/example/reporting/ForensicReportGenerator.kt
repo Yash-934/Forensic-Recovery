@@ -1,6 +1,7 @@
 package com.example.reporting
 
 import com.example.core.DeviceForensicCapabilities
+import com.example.core.HashUtils
 import com.example.model.RecoveryCandidate
 import com.example.model.ScanSession
 import java.text.SimpleDateFormat
@@ -48,7 +49,7 @@ object ForensicReportGenerator {
     sb.append("| **Target Boundary** | `${session.targetPath}` |\n")
     sb.append("| **Scan Started** | $startTime |\n")
     sb.append("| **Scan Concluded** | $endTime |\n")
-    sb.append("| **Bytes Processed** | ${session.processedBytes} bytes (${session.processedBytes / (1024 * 1024)} MB) |\n")
+    sb.append("| **Bytes Processed** | ${HashUtils.formatFileSize(session.processedBytes)} (${session.processedBytes} bytes) |\n")
     sb.append("| **Candidates Identified** | ${candidates.size} |\n")
     sb.append("| **Validated Integrity Count** | ${candidates.count { it.confidenceScore >= 80.0 }} |\n\n")
 
@@ -59,7 +60,7 @@ object ForensicReportGenerator {
       sb.append("| ID / File | Type | Size | Confidence | State | SHA-256 Hash |\n")
       sb.append("|---|---|---|---|---|---|\n")
       for (c in candidates) {
-        sb.append("| `${c.suggestedFilename}` | ${c.extension.uppercase()} | ${c.size} B | **${c.confidenceScore.toInt()}%** | ${c.validationState.name} | `${c.sha256.take(16)}...` |\n")
+        sb.append("| `${c.suggestedFilename}` | ${c.extension.uppercase()} | ${HashUtils.formatFileSize(c.size)} | **${c.confidenceScore.toInt()}%** | ${c.validationState.name} | `${c.sha256.take(16)}...` |\n")
       }
       sb.append("\n")
 
@@ -67,6 +68,7 @@ object ForensicReportGenerator {
       for ((idx, c) in candidates.withIndex()) {
         sb.append("#### [${idx + 1}] ${c.suggestedFilename}\n")
         sb.append("- **Candidate ID:** `${c.id}`\n")
+        sb.append("- **Recovered Size:** ${HashUtils.formatFileSize(c.size)} (${c.size} bytes)\n")
         sb.append("- **Source Offset:** `0x${c.startOffset.toString(16).uppercase()} .. 0x${c.endOffset.toString(16).uppercase()}`\n")
         sb.append("- **MIME Guess:** ${c.mimeGuess}\n")
         sb.append("- **Entropy Score:** ${String.format(Locale.US, "%.3f", c.entropy)} / 8.0\n")

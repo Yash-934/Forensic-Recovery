@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.core.HashUtils
 import com.example.model.RecoveryCandidate
 import com.example.model.ValidationState
 import com.example.ui.theme.CorruptedRed
@@ -199,7 +200,7 @@ fun ResultsScreen(
 
             Spacer(Modifier.height(8.dp))
             Text(
-              text = "State: ${c.validationState.name} | Size: ${c.size} B | MIME: ${c.mimeGuess}",
+              text = "State: ${c.validationState.name} | Size: ${HashUtils.formatFileSize(c.size)} (${c.size} B) | MIME: ${c.mimeGuess}",
               color = TextSecondaryDark,
               fontSize = 11.sp
             )
@@ -350,7 +351,7 @@ fun CandidateRow(
         )
         Spacer(Modifier.height(2.dp))
         Text(
-          text = "${candidate.extension.uppercase()} • ${candidate.size} B • Entropy: ${String.format("%.2f", candidate.entropy)}",
+          text = "${candidate.extension.uppercase()} • ${HashUtils.formatFileSize(candidate.size)} • Entropy: ${String.format("%.2f", candidate.entropy)}",
           color = TextSecondaryDark,
           fontSize = 10.sp
         )
